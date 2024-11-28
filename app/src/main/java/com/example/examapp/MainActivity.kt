@@ -12,6 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.examapp.ui.theme.ExamAPPTheme
+import android.content.pm.ActivityInfo
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.unit.dp
+import android.os.Handler
+import android.os.Looper
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,10 +31,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             ExamAPPTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+                    Start(m = Modifier.padding(innerPadding))
+
+
+
                 }
             }
         }
@@ -31,17 +43,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+fun Start(m: Modifier){
+    Image(
+        painter = painterResource(id = R.drawable.background),
+        contentDescription = "背景圖",
+        contentScale = ContentScale.FillBounds,  //縮放符合螢幕寬度
+        modifier = Modifier
     )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ExamAPPTheme {
-        Greeting("Android")
-    }
+    val animal1 = arrayListOf(R.drawable.seaturtle)
+    Image(
+        painter = painterResource(id = animal1[0]),
+        contentDescription = "海龜",
+        modifier = Modifier
+            .size(80.dp)
+            .offset { IntOffset(1000, y = 200) }
+    )
+
+
+
 }
