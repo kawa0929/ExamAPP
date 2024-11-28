@@ -22,6 +22,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.unit.dp
 import android.os.Handler
 import android.os.Looper
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Button
+import kotlinx.coroutines.GlobalScope
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 
 
 class MainActivity : ComponentActivity() {
@@ -32,7 +37,9 @@ class MainActivity : ComponentActivity() {
             ExamAPPTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-                    Start(m = Modifier.padding(innerPadding))
+                    val game = Game(GlobalScope)
+                    Start(m = Modifier.padding(innerPadding), game)
+
 
 
 
@@ -41,10 +48,21 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
-fun Start(m: Modifier){
-    Image(
+fun Start(m: Modifier, game:Game){
+    val counter by game.state.collectAsState()
+    Row {
+        Button(
+            onClick = {
+                game.Play()
+            }
+        ) {
+            Text(text = "開始")
+        }
+        Text(text = counter.toString(), modifier = m)
+    }
+
+Image(
         painter = painterResource(id = R.drawable.background),
         contentDescription = "背景圖",
         contentScale = ContentScale.FillBounds,  //縮放符合螢幕寬度
@@ -59,7 +77,4 @@ fun Start(m: Modifier){
             .size(80.dp)
             .offset { IntOffset(1000, y = 200) }
     )
-
-
-
 }
