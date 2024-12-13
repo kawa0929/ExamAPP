@@ -118,11 +118,4 @@ Image(
             .size(80.dp)
             .offset { IntOffset(x = 1300, y = 500) }
     )
-    Image(
-        painter = painterResource(id = R.drawable.start),
-        contentDescription = "開始鍵",
-        modifier = Modifier
-            .size(100.dp)
-            .offset { IntOffset(x = 800, y = 700) }
-    )
 }
