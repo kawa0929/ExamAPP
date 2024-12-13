@@ -69,12 +69,60 @@ Image(
         modifier = Modifier
     )
 
-    val animal1 = arrayListOf(R.drawable.seaturtle)
     Image(
-        painter = painterResource(id = animal1[0]),
+        painter = painterResource(id = R.drawable.seaturtle),
         contentDescription = "海龜",
         modifier = Modifier
-            .size(80.dp)
+            .size(100.dp)
             .offset { IntOffset(1000, y = 200) }
+    )
+    Image(
+        painter = painterResource(id = R.drawable.clownfish),
+        contentDescription = "小丑魚",
+        modifier = Modifier
+            .size(80.dp)
+            .offset { IntOffset(500, y = 100) }
+    )
+    Image(
+        painter = painterResource(id = R.drawable.dolphin),
+        contentDescription = "海豚",
+        modifier = Modifier
+            .size(150.dp)
+            .offset { IntOffset(670, y = 390) }
+    )
+    Image(
+        painter = painterResource(id = R.drawable.jellyfish),
+        contentDescription = "水母",
+        modifier = Modifier
+            .size(80.dp)
+            .offset { IntOffset(40, y =450) }
+    )
+    Image(
+        painter = painterResource(id = R.drawable.starfish),
+        contentDescription = "海星",
+        modifier = Modifier
+            .size(80.dp)
+            .offset { IntOffset(1500, y = 70) }
+    )
+    Image(
+        painter = painterResource(id = R.drawable.shell),
+        contentDescription = "貝殼",
+        modifier = Modifier
+            .size(80.dp)
+            .offset { IntOffset(x = 90, y = 790) }
+    )
+    Image(
+        painter = painterResource(id = R.drawable.pufferfish),
+        contentDescription = "河豚",
+        modifier = Modifier
+            .size(80.dp)
+            .offset { IntOffset(x = 1300, y = 500) }
+    )
+    Image(
+        painter = painterResource(id = R.drawable.start),
+        contentDescription = "開始鍵",
+        modifier = Modifier
+            .size(100.dp)
+            .offset { IntOffset(x = 800, y = 700) }
     )
 }
