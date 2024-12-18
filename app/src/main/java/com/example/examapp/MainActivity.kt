@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.examapp.ui.theme.ExamAPPTheme
 import android.content.pm.ActivityInfo
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.layout.ContentScale
@@ -36,7 +37,9 @@ import androidx.compose.ui.Alignment
 
 
 
+
 class MainActivity : ComponentActivity() {
+    private var mediaPlayer: MediaPlayer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,26 +47,62 @@ class MainActivity : ComponentActivity() {
             ExamAPPTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+                    var isGameStarted by remember { mutableStateOf(false) }
                     var selectedFish by remember { mutableStateOf<String?>(null) }
 
-                    if (selectedFish == null) {
-                        StartScreen(
-                            onFishClicked = { fishName ->
-                                selectedFish = fishName
-                            }
-                        )
+                    if (!isGameStarted) {
+                        // 起始畫面
+                        FirstScreen(onStartClicked = { isGameStarted = true })
+
                     } else {
-                        ShowFishBackground(
-                            fishName = selectedFish!!,
-                            onBackClicked = { selectedFish = null } // 回到主畫面
-                        )
-                        // 返回到主畫面
+
+                        if (selectedFish == null) {
+                            StartScreen(
+                                onFishClicked = { fishName ->
+                                    selectedFish = fishName
+                                }
+                            )
+                        } else {
+                            ShowFishBackground(
+                                fishName = selectedFish!!,
+                                onBackClicked = { selectedFish = null },
+                                onVoiceClicked = { selectedFish?.let { playVoice(it) } }
+                            )
                         }
                     }
                 }
             }
         }
     }
+
+private fun playVoice(fishName: String) {
+    // 停止舊的音檔
+    mediaPlayer?.stop()
+    mediaPlayer?.release()
+
+    // 根據魚名稱播放對應音檔
+    val voiceRes = when (fishName) {
+        "jellyfish" -> R.raw.jellyfish
+        "seaturtle" -> R.raw.seaturtle
+        "clownfish" -> R.raw.clownfish
+        "starfish" -> R.raw.starfish
+        "shell" -> R.raw.shell
+        "pufferfish" -> R.raw.pufferfish
+        "dolphin" -> R.raw.dolphin
+        else -> null
+    }
+
+    if (voiceRes != null) {
+        mediaPlayer = MediaPlayer.create(this, voiceRes)
+        mediaPlayer?.start()
+    }
+}
+
+override fun onDestroy() {
+    super.onDestroy()
+    mediaPlayer?.release()
+}
+}
 
 
 @Composable
@@ -135,7 +174,7 @@ fun StartScreen(onFishClicked: (String) -> Unit) {
 }
 
 @Composable
-fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit) {
+fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit,onVoiceClicked: () -> Unit) {
     val backgroundRes = when (fishName) {
         "jellyfish" -> R.drawable.jellyfishbackground
         "seaturtle" -> R.drawable.seaturtlebackground
@@ -165,6 +204,38 @@ fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit) {
                 .padding(16.dp) // 增加內邊距讓按鈕不貼邊
                 .clickable { onBackClicked() } // 按下觸發回調
         )
+        Image(
+            painter = painterResource(id = R.drawable.voice),
+            contentDescription = "語音按鈕",
+            modifier = Modifier
+                .size(80.dp)
+                .offset(x = 300.dp, y = 200.dp) // 測試值
+                .clickable { onVoiceClicked() }
+
+        )
     }
 }
+@Composable
+fun FirstScreen(onStartClicked: () -> Unit) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        // 起始畫面背景圖片
+        Image(
+            painter = painterResource(id = R.drawable.first),
+            contentDescription = "起始畫面背景",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // Start Button 圖片
+        Image(
+            painter = painterResource(id = R.drawable.start),
+            contentDescription = "開始按鈕",
+            modifier = Modifier
+                .size(200.dp) // 調整按鈕大小
+                .align(Alignment.Center) // 放置在畫面中央
+                .clickable { onStartClicked() } // 點擊事件
+        )
+    }
+}
+
 
