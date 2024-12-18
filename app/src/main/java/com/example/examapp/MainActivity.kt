@@ -30,7 +30,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+
 
 
 class MainActivity : ComponentActivity() {
@@ -50,13 +53,18 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     } else {
-                        ShowFishBackground(fishName = selectedFish!!)
+                        ShowFishBackground(
+                            fishName = selectedFish!!,
+                            onBackClicked = { selectedFish = null } // 回到主畫面
+                        )
+                        // 返回到主畫面
+                        }
                     }
                 }
             }
         }
     }
-}
+
 
 @Composable
 fun StartScreen(onFishClicked: (String) -> Unit) {
@@ -68,7 +76,6 @@ fun StartScreen(onFishClicked: (String) -> Unit) {
         modifier = Modifier.fillMaxSize()
     )
 
-    // 各種魚圖片，加入 clickable 修飾符
     Image(
         painter = painterResource(id = R.drawable.jellyfish),
         contentDescription = "水母",
@@ -128,24 +135,36 @@ fun StartScreen(onFishClicked: (String) -> Unit) {
 }
 
 @Composable
-fun ShowFishBackground(fishName: String) {
-    // 根據魚的名稱顯示相應背景
+fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit) {
     val backgroundRes = when (fishName) {
         "jellyfish" -> R.drawable.jellyfishbackground
         "seaturtle" -> R.drawable.seaturtlebackground
         "clownfish" -> R.drawable.cfishbackground
-        "starfish"  -> R.drawable.starbackground
-        "shell"     -> R.drawable.shellbackground
-        "pufferfish"-> R.drawable.pufferfishbackground
-        "dolphin"   -> R.drawable.dolphinbackground
-        else -> R.drawable.background // 預設背景
+        "starfish" -> R.drawable.starbackground
+        "shell" -> R.drawable.shellbackground
+        "pufferfish" -> R.drawable.pufferfishbackground
+        "dolphin" -> R.drawable.dolphinbackground
+        else -> R.drawable.background
     }
-
-    Image(
-        painter = painterResource(id = backgroundRes),
-        contentDescription = "魚背景圖",
-        contentScale = ContentScale.FillBounds,
+    Box(
         modifier = Modifier.fillMaxSize()
-    )
+    ) {
+        Image(
+            painter = painterResource(id = backgroundRes),
+            contentDescription = "魚背景圖",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.backbutton),
+            contentDescription = "返回按鈕",
+            modifier = Modifier
+                .size(100.dp)
+                .align(Alignment.TopEnd) // 放置在右上角
+                .padding(16.dp) // 增加內邊距讓按鈕不貼邊
+                .clickable { onBackClicked() } // 按下觸發回調
+        )
+    }
 }
 
