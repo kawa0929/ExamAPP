@@ -107,7 +107,6 @@ override fun onDestroy() {
 
 @Composable
 fun StartScreen(onFishClicked: (String) -> Unit) {
-    // 初始背景
     Image(
         painter = painterResource(id = R.drawable.background),
         contentDescription = "背景圖",
@@ -200,16 +199,16 @@ fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit,onVoiceClicke
             contentDescription = "返回按鈕",
             modifier = Modifier
                 .size(100.dp)
-                .align(Alignment.TopEnd) // 放置在右上角
-                .padding(16.dp) // 增加內邊距讓按鈕不貼邊
-                .clickable { onBackClicked() } // 按下觸發回調
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
+                .clickable { onBackClicked() }
         )
         Image(
             painter = painterResource(id = R.drawable.voice),
             contentDescription = "語音按鈕",
             modifier = Modifier
                 .size(80.dp)
-                .offset(x = 300.dp, y = 200.dp) // 測試值
+                .offset(x = 300.dp, y = 200.dp)
                 .clickable { onVoiceClicked() }
 
         )
@@ -218,7 +217,7 @@ fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit,onVoiceClicke
 @Composable
 fun FirstScreen(onStartClicked: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
-        // 起始畫面背景圖片
+
         Image(
             painter = painterResource(id = R.drawable.first),
             contentDescription = "起始畫面背景",
@@ -226,14 +225,13 @@ fun FirstScreen(onStartClicked: () -> Unit) {
             modifier = Modifier.fillMaxSize()
         )
 
-        // Start Button 圖片
         Image(
             painter = painterResource(id = R.drawable.start),
             contentDescription = "開始按鈕",
             modifier = Modifier
-                .size(200.dp) // 調整按鈕大小
-                .align(Alignment.Center) // 放置在畫面中央
-                .clickable { onStartClicked() } // 點擊事件
+                .size(200.dp)
+                .align(Alignment.Center)
+                .clickable { onStartClicked() }
         )
     }
 }
