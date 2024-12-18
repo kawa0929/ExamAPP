@@ -62,7 +62,7 @@ fun Start(m: Modifier, game:Game){
         Text(text = counter.toString(), modifier = m)
     }
 
-Image(
+    Image(
         painter = painterResource(id = R.drawable.background),
         contentDescription = "背景圖",
         contentScale = ContentScale.FillBounds,  //縮放符合螢幕寬度
@@ -119,3 +119,4 @@ Image(
             .offset { IntOffset(x = 1300, y = 500) }
     )
 }
+
