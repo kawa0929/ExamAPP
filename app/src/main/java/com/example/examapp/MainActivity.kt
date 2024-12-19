@@ -34,6 +34,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.res.painterResource
 
 
 
@@ -58,9 +64,8 @@ class MainActivity : ComponentActivity() {
 
                         if (selectedFish == null) {
                             StartScreen(
-                                onFishClicked = { fishName ->
-                                    selectedFish = fishName
-                                }
+                                onFishClicked = { fishName -> selectedFish = fishName },
+                                onExitClicked = { finish() } // 傳遞退出程式的回調
                             )
                         } else {
                             ShowFishBackground(
@@ -106,71 +111,85 @@ override fun onDestroy() {
 
 
 @Composable
-fun StartScreen(onFishClicked: (String) -> Unit) {
-    Image(
-        painter = painterResource(id = R.drawable.background),
-        contentDescription = "背景圖",
-        contentScale = ContentScale.FillBounds,
-        modifier = Modifier.fillMaxSize()
-    )
+fun StartScreen(onFishClicked: (String) -> Unit,onExitClicked: () -> Unit) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.background),
+            contentDescription = "背景圖",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
 
-    Image(
-        painter = painterResource(id = R.drawable.jellyfish),
-        contentDescription = "水母",
-        modifier = Modifier
-            .size(80.dp)
-            .offset { IntOffset(40, 450) }
-            .clickable { onFishClicked("jellyfish") }
-    )
-    Image(
-        painter = painterResource(id = R.drawable.seaturtle),
-        contentDescription = "海龜",
-        modifier = Modifier
-            .size(100.dp)
-            .offset { IntOffset(1000, 200) }
-            .clickable { onFishClicked("seaturtle") }
-    )
-    Image(
-        painter = painterResource(id = R.drawable.clownfish),
-        contentDescription = "小丑魚",
-        modifier = Modifier
-            .size(80.dp)
-            .offset { IntOffset(500, 100) }
-            .clickable { onFishClicked("clownfish") }
-    )
-    Image(
-        painter = painterResource(id = R.drawable.starfish),
-        contentDescription = "海星",
-        modifier = Modifier
-            .size(80.dp)
-            .offset { IntOffset(1500, y = 70) }
-            .clickable { onFishClicked("starfish") }
-    )
-    Image(
-        painter = painterResource(id = R.drawable.shell),
-        contentDescription = "貝殼",
-        modifier = Modifier
-            .size(80.dp)
-            .offset { IntOffset(x = 90, y = 790) }
-            .clickable { onFishClicked("shell") }
-    )
-    Image(
-        painter = painterResource(id = R.drawable.pufferfish),
-        contentDescription = "河豚",
-        modifier = Modifier
-            .size(80.dp)
-            .offset { IntOffset(x = 1300, y = 500) }
-            .clickable { onFishClicked("pufferfish") }
-    )
-    Image(
-        painter = painterResource(id = R.drawable.dolphin),
-        contentDescription = "海豚",
-        modifier = Modifier
-            .size(150.dp)
-            .offset { IntOffset(670, y = 390) }
-            .clickable { onFishClicked("dolphin") }
-    )
+        Image(
+            painter = painterResource(id = R.drawable.jellyfish),
+            contentDescription = "水母",
+            modifier = Modifier
+                .size(80.dp)
+                .offset { IntOffset(40, 450) }
+                .clickable { onFishClicked("jellyfish") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.seaturtle),
+            contentDescription = "海龜",
+            modifier = Modifier
+                .size(100.dp)
+                .offset { IntOffset(1000, 200) }
+                .clickable { onFishClicked("seaturtle") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.clownfish),
+            contentDescription = "小丑魚",
+            modifier = Modifier
+                .size(80.dp)
+                .offset { IntOffset(500, 100) }
+                .clickable { onFishClicked("clownfish") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.starfish),
+            contentDescription = "海星",
+            modifier = Modifier
+                .size(80.dp)
+                .offset { IntOffset(1500, y = 70) }
+                .clickable { onFishClicked("starfish") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.shell),
+            contentDescription = "貝殼",
+            modifier = Modifier
+                .size(80.dp)
+                .offset { IntOffset(x = 90, y = 790) }
+                .clickable { onFishClicked("shell") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.pufferfish),
+            contentDescription = "河豚",
+            modifier = Modifier
+                .size(80.dp)
+                .offset { IntOffset(x = 1300, y = 500) }
+                .clickable { onFishClicked("pufferfish") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.dolphin),
+            contentDescription = "海豚",
+            modifier = Modifier
+                .size(150.dp)
+                .offset { IntOffset(670, y = 390) }
+                .clickable { onFishClicked("dolphin") }
+        )
+        Image(
+            painter = painterResource(id = R.drawable.exit),
+            contentDescription = "結束按鈕",
+            modifier = Modifier
+                .size(120.dp)
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+                .clickable { onExitClicked() }
+        )
+
+    }
 }
+
+
 
 @Composable
 fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit,onVoiceClicked: () -> Unit) {
@@ -198,7 +217,7 @@ fun ShowFishBackground(fishName: String, onBackClicked: () -> Unit,onVoiceClicke
             painter = painterResource(id = R.drawable.backbutton),
             contentDescription = "返回按鈕",
             modifier = Modifier
-                .size(100.dp)
+                .size(120.dp)
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
                 .clickable { onBackClicked() }
@@ -229,8 +248,8 @@ fun FirstScreen(onStartClicked: () -> Unit) {
             painter = painterResource(id = R.drawable.start),
             contentDescription = "開始按鈕",
             modifier = Modifier
-                .size(200.dp)
-                .align(Alignment.Center)
+                .size(150.dp)
+                .offset { IntOffset(750, 600) }
                 .clickable { onStartClicked() }
         )
     }
